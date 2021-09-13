@@ -24,7 +24,7 @@ export const sendRequest = createAsyncThunk(
         },
       );
       const data = await response.json();
-      return {...data, body, isStatusOK: !!data.errors};
+      return {response: data, body, isStatusOK: !!data.errors};
     },
   );
 

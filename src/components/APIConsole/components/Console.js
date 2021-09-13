@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { isEqual } from 'lodash'
 import { sendRequest, updateCurrentRequest} from '../../../features/requestsSlice'
 
-export default function Console() {
+export default function Console(props) {
+    
     const dispatch = useDispatch()
     const requestRef = useRef('')
     const [response, setResponse] = useState('')
     const session = useSelector(state => state.auth.session)
     const requests = useSelector(state => state.requests.entities)
+    const currentRequestResponseString = requests.length ? JSON.stringify(requests[0].response) : ''
 
     function handleSendRequest() {
         const requestJSON = requestRef.current.value
@@ -33,12 +35,28 @@ export default function Console() {
         // change requestRef.value to body of first element
     }
 
+    function prettifyRequstBody() {
+        const ugly = requestRef.current.value;
+        let pretty;
+        try {
+            const obj = JSON.parse(ugly);
+            pretty = JSON.stringify(obj, undefined, 4);
+        }
+        catch (err) {
+            console.log(err)
+            return
+        } 
+
+        requestRef.current.value = pretty;
+    }
+
     return (
         <div>
             Console
             <textarea ref={requestRef} name="request"></textarea>
-            <textarea name="response" value={response} disabled></textarea>
+            <textarea name="response" value={currentRequestResponseString} disabled></textarea>
             <button onClick={handleSendRequest}>Отправить</button>
+            <button onClick={prettifyRequstBody}>Форматировать</button>
         </div>
     )
 }
