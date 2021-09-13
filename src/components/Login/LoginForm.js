@@ -1,11 +1,15 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux'
+import {Redirect} from 'react-router-dom'
 import {signIn, updateLogin, updatePassword, updateSubLogin} from '../../features/authSlice'
 
-export default function LoginForm() {
+export default function LoginForm({isAuthenticated}) {
     const dispatch = useDispatch()
     const {login, password, subLogin, errorLogin, errorPassword} = useSelector(state => state.auth)
     
+  if(isAuthenticated) {
+    return <Redirect to='api-console' />
+  }
 
   return (
     <form>
@@ -25,6 +29,9 @@ export default function LoginForm() {
         {errorPassword && <span>{errorPassword}</span>}
       </div>
       <button type="button" onClick={() => !errorLogin && dispatch(signIn({login, password}))}>Войти</button>
+      <input type="radio" name="lol" id="1" onChange={e => console.log('1', e.target.checked)} />
+      <input type="radio" name="lol" id="2" onChange={e => console.log('2', e.target.checked)} />
+
     </form>
   );
 }

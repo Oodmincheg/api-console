@@ -23,9 +23,8 @@ export const signIn = createAsyncThunk(
       },
     );
     const data = await response.json();
-    localStorage.setItem('session', JSON.stringify(data.session));
-    localStorage.setItem('login', JSON.stringify(data.login))
-    console.log('response ===> ', data);
+    localStorage.setItem('session', data.session);
+    localStorage.setItem('login', data.login)
     return data;
   },
 );

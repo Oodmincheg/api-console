@@ -27,14 +27,14 @@ export const getAccount = createAsyncThunk(
         },
       );
       const data = await response.json();
-      return data;
+      return {...data, session};
     },
   );
 
 
 const userSlice = createSlice({
     name: 'user',
-    initialState : {},
+    initialState : {user: {}},
     reducers: {
         updateUser(state, action) {
             state.user = action.payload
@@ -44,9 +44,11 @@ const userSlice = createSlice({
         // Add reducers for additional action types here, and handle loading state as needed
         builder.addCase(getAccount.fulfilled, (state, action) => {
           // Add user to the state array
+          if(action.payload.errors) {
+            state.user = {}
+            return
+          }
           state.user = action.payload;
-          
-          console.log('action ===> ', action)
         });
       },
 })
