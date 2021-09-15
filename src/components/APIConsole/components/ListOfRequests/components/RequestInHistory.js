@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {useDispatch} from 'react-redux'
-import { updateCurrentRequestBodyString, sendRequest } from '../../../../../features/requestsSlice'
+import { updateCurrentRequestBodyString, sendRequest, deleteRequest } from '../../../../../features/requestsSlice'
 
 export default function RequestInHistory({request}) {
     const dispatch = useDispatch()
@@ -11,7 +11,14 @@ export default function RequestInHistory({request}) {
         dispatch(updateCurrentRequestBodyString(requestBodyString))
         dispatch(sendRequest(request.body))
     }
+    
+    function handleCopy() {
+        //need some research
+    }
 
+    function handleDelete() {
+        dispatch(deleteRequest(request.body))
+    }
     return (
     
         <div onClick={() => setOpened(!isOpened)} style={{border: '1px solid black', padding: '2px'}}>{request.body.action}
@@ -19,7 +26,7 @@ export default function RequestInHistory({request}) {
             <ul>
                 <li onClick={handleExecute}>Выполнить</li>
                 <li>Скопировать</li>
-                <li>Удалить</li>
+                <li onClick={handleDelete}>Удалить</li>
             </ul>
         )}
         </div>

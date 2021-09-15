@@ -44,6 +44,9 @@ const requestsSlice = createSlice({
     updateCurrentRequestBodyString(state, action) {
       state.currentRequestBodyString = action.payload;
     },
+    deleteRequest(state, action) {
+      state.entities = state.entities.filter(({body}) => !isEqual(body, action.payload))
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(sendRequest.fulfilled, (state, action) => {
@@ -63,5 +66,5 @@ const requestsSlice = createSlice({
 });
 
 const { reducer, actions } = requestsSlice;
-export const { updateCurrentRequest, updateCurrentRequestBodyString } = actions;
+export const { updateCurrentRequest, updateCurrentRequestBodyString, deleteRequest } = actions;
 export default reducer;
