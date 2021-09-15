@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { email } from '@sideway/address';
+import api from '../api';
 
 export const signIn = createAsyncThunk(
   'auth/signIn',
@@ -7,21 +8,8 @@ export const signIn = createAsyncThunk(
 
   async (params, thunkAPI) => {
     //TODO: move request to api or rtk query
-    const response = await fetch(
-      `https://api.sendsay.ru/general/api/v100/json/${params.login}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: JSON.stringify({
-          action: 'login',
-          login: params.login,
-          passwd: params.password,
-        }),
-      },
-    );
+    const {login, password} = params
+    const response = await api.login(login, password)
     const data = await response.json();
     localStorage.setItem('session', data.session);
     localStorage.setItem('login', data.login)
