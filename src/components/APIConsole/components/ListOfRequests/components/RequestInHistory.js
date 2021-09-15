@@ -14,6 +14,9 @@ export default function RequestInHistory({request}) {
     
     function handleCopy() {
         //need some research
+        navigator.clipboard.writeText(JSON.stringify(request.body))
+        .then(data => console.log('copying data', data))
+        .catch(err => console.log('copying err ', err))
     }
 
     function handleDelete() {
@@ -25,7 +28,7 @@ export default function RequestInHistory({request}) {
         {isOpened && (
             <ul>
                 <li onClick={handleExecute}>Выполнить</li>
-                <li>Скопировать</li>
+                <li onClick={handleCopy}>Скопировать</li>
                 <li onClick={handleDelete}>Удалить</li>
             </ul>
         )}
